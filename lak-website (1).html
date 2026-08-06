@@ -1,0 +1,1244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lak Rincón Deli — Café de Especialidad · CDMX</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #f5f0e8;
+  --warm: #ede5d4;
+  --dark: #0e0b08;
+  --dark2: #1a1510;
+  --gold: #b8923a;
+  --gold2: #d4a854;
+  --rust: #8b4513;
+  --text: #f0ebe0;
+  --muted: #8a7d6a;
+  --border: rgba(184,146,58,0.2);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html{scroll-behavior:smooth;overflow-x:hidden;}
+
+body{
+  background:var(--dark);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* CUSTOM CURSOR */
+.cursor{
+  position:fixed;width:10px;height:10px;
+  background:var(--gold);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:transform 0.1s,width 0.3s,height 0.3s,background 0.3s;
+  mix-blend-mode:difference;
+}
+.cursor-ring{
+  position:fixed;width:40px;height:40px;
+  border:1px solid var(--gold);border-radius:50%;
+  pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:all 0.15s ease;
+  opacity:0.6;
+}
+body:hover .cursor{opacity:1;}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  padding:24px 48px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:transparent;
+  transition:background 0.4s,padding 0.4s;
+}
+nav.scrolled{
+  background:rgba(14,11,8,0.92);
+  backdrop-filter:blur(16px);
+  padding:16px 48px;
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:600;
+  letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold2);
+  text-decoration:none;
+}
+.nav-logo span{font-weight:300;font-style:italic;}
+.nav-links{
+  display:flex;gap:40px;list-style:none;
+}
+.nav-links a{
+  font-size:12px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--text);text-decoration:none;
+  position:relative;padding-bottom:3px;
+  transition:color 0.3s;
+}
+.nav-links a::after{
+  content:'';position:absolute;bottom:0;left:0;
+  width:0;height:1px;background:var(--gold);
+  transition:width 0.3s;
+}
+.nav-links a:hover{color:var(--gold2);}
+.nav-links a:hover::after{width:100%;}
+.nav-cta{
+  background:var(--gold);color:var(--dark);
+  padding:10px 24px;font-size:11px;
+  letter-spacing:2px;text-transform:uppercase;
+  text-decoration:none;font-weight:500;
+  transition:all 0.3s;
+  clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+}
+.nav-cta:hover{background:var(--gold2);transform:scale(1.03);}
+.nav-hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;}
+.nav-hamburger span{width:28px;height:1px;background:var(--text);transition:all 0.3s;}
+
+/* HERO */
+#hero{
+  position:relative;height:100vh;min-height:700px;
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:flex-start;
+  padding:0 8vw;overflow:hidden;
+}
+
+.hero-canvas{
+  position:absolute;inset:0;z-index:0;
+}
+
+.hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(14,11,8,0.85) 0%,rgba(14,11,8,0.4) 60%,transparent 100%);
+  z-index:1;
+}
+
+.hero-tag{
+  position:relative;z-index:2;
+  font-size:11px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:24px;
+  display:flex;align-items:center;gap:12px;
+  opacity:0;animation:fadeUp 0.8s ease 0.3s forwards;
+}
+.hero-tag::before{content:'';width:40px;height:1px;background:var(--gold);}
+
+.hero-title{
+  position:relative;z-index:2;
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(72px,12vw,160px);
+  line-height:0.9;
+  letter-spacing:-1px;
+  color:var(--cream);
+  margin-bottom:8px;
+  opacity:0;animation:fadeUp 0.8s ease 0.5s forwards;
+}
+.hero-title .gold{color:var(--gold2);}
+.hero-title .italic{
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;font-weight:300;
+  font-size:0.65em;
+}
+
+.hero-sub{
+  position:relative;z-index:2;
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(18px,2.5vw,28px);
+  font-style:italic;color:var(--warm);
+  margin-bottom:48px;
+  opacity:0;animation:fadeUp 0.8s ease 0.7s forwards;
+}
+
+.hero-btns{
+  position:relative;z-index:2;
+  display:flex;gap:20px;flex-wrap:wrap;
+  opacity:0;animation:fadeUp 0.8s ease 0.9s forwards;
+}
+.btn-primary{
+  background:var(--gold);color:var(--dark);
+  padding:16px 40px;font-size:12px;
+  letter-spacing:2px;text-transform:uppercase;
+  text-decoration:none;font-weight:500;
+  clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);
+  transition:all 0.3s;display:inline-block;
+}
+.btn-primary:hover{background:var(--gold2);transform:scale(1.03);}
+.btn-outline{
+  border:1px solid rgba(245,240,232,0.4);
+  color:var(--cream);padding:16px 40px;font-size:12px;
+  letter-spacing:2px;text-transform:uppercase;
+  text-decoration:none;transition:all 0.3s;
+}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);}
+
+.hero-scroll{
+  position:absolute;bottom:40px;left:50%;
+  transform:translateX(-50%);z-index:2;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  opacity:0;animation:fadeUp 0.8s ease 1.2s forwards;
+}
+.hero-scroll span{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);}
+.scroll-line{width:1px;height:60px;background:linear-gradient(to bottom,var(--gold),transparent);animation:scrollPulse 2s infinite;}
+
+@keyframes scrollPulse{0%,100%{opacity:0.3;transform:scaleY(1);}50%{opacity:1;transform:scaleY(1.1);}}
+
+/* MARQUEE */
+.marquee-strip{
+  background:var(--gold);
+  padding:14px 0;overflow:hidden;
+  border-top:1px solid var(--gold2);
+  border-bottom:1px solid var(--gold2);
+}
+.marquee-track{
+  display:flex;gap:60px;white-space:nowrap;
+  animation:marquee 20s linear infinite;
+}
+.marquee-track span{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:16px;letter-spacing:3px;
+  color:var(--dark);
+}
+.marquee-sep{color:var(--dark);opacity:0.4;}
+@keyframes marquee{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* SECTIONS */
+section{padding:120px 8vw;position:relative;}
+
+.section-label{
+  font-size:10px;letter-spacing:4px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:16px;
+  display:flex;align-items:center;gap:12px;
+}
+.section-label::before{content:'';width:30px;height:1px;background:var(--gold);}
+
+.section-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(42px,6vw,80px);
+  font-weight:300;line-height:1.1;
+  color:var(--cream);
+}
+.section-title em{font-style:italic;color:var(--gold2);}
+
+/* ABOUT */
+#about{background:var(--dark);}
+.about-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:80px;align-items:center;margin-top:80px;
+}
+.about-visual{
+  position:relative;height:600px;
+  overflow:hidden;
+}
+.about-visual-main{
+  width:100%;height:100%;
+  background:linear-gradient(135deg,#2a1f10 0%,#1a1208 100%);
+  position:relative;overflow:hidden;
+}
+.coffee-scene{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+}
+.about-tag-float{
+  position:absolute;bottom:30px;right:-20px;
+  background:var(--gold);color:var(--dark);
+  padding:20px 28px;
+  font-family:'Cormorant Garamond',serif;
+  font-size:13px;font-style:italic;
+  max-width:200px;text-align:center;line-height:1.5;
+  z-index:2;
+}
+.about-text p{
+  font-size:17px;line-height:1.8;
+  color:rgba(240,235,224,0.75);margin-bottom:24px;
+}
+.about-text p strong{color:var(--gold2);font-weight:400;}
+.about-stats{
+  display:flex;gap:48px;margin-top:48px;
+  padding-top:48px;border-top:1px solid var(--border);
+}
+.stat h3{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:52px;color:var(--gold2);line-height:1;
+}
+.stat p{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-top:4px;}
+
+/* MENU SECTION */
+#menu{background:var(--dark2);}
+.menu-tabs{
+  display:flex;gap:0;margin-top:60px;margin-bottom:60px;
+  border-bottom:1px solid var(--border);
+}
+.menu-tab{
+  padding:16px 32px;font-size:12px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:var(--muted);cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:all 0.3s;margin-bottom:-1px;
+  background:none;border-top:none;border-left:none;border-right:none;
+  font-family:'DM Sans',sans-serif;
+}
+.menu-tab.active{color:var(--gold2);border-bottom-color:var(--gold);}
+.menu-tab:hover{color:var(--cream);}
+
+.menu-panel{display:none;}
+.menu-panel.active{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:2px;}
+
+.menu-card{
+  background:rgba(255,255,255,0.02);
+  border:1px solid var(--border);
+  padding:28px 32px;
+  transition:all 0.4s;
+  position:relative;overflow:hidden;
+  cursor:default;
+}
+.menu-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;
+  height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));
+  transform:scaleX(0);transition:transform 0.4s;transform-origin:left;
+}
+.menu-card:hover::before{transform:scaleX(1);}
+.menu-card:hover{background:rgba(184,146,58,0.05);transform:translateY(-2px);}
+
+.card-category{
+  font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:16px;
+}
+.card-item{
+  display:flex;justify-content:space-between;align-items:baseline;
+  padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.04);
+}
+.card-item:last-child{border-bottom:none;}
+.item-name{font-size:14px;color:rgba(240,235,224,0.85);flex:1;}
+.item-desc{font-size:11px;color:var(--muted);margin-top:2px;}
+.item-price{
+  font-family:'Cormorant Garamond',serif;
+  font-size:18px;color:var(--gold2);
+  font-weight:300;margin-left:16px;flex-shrink:0;
+}
+
+/* EXPERIENCE / 3D SCENE */
+#experience{
+  background:var(--dark);
+  min-height:80vh;
+  display:flex;align-items:center;
+}
+.exp-inner{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:100px;align-items:center;width:100%;
+}
+.exp-canvas-wrap{
+  position:relative;height:500px;
+}
+#expCanvas{width:100%;height:100%;display:block;}
+.exp-content .section-title{margin-bottom:32px;}
+.exp-content p{
+  font-size:16px;line-height:1.8;
+  color:rgba(240,235,224,0.7);margin-bottom:20px;
+}
+.exp-list{list-style:none;margin-top:32px;}
+.exp-list li{
+  padding:16px 0;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:16px;
+  font-size:14px;color:rgba(240,235,224,0.8);
+  transition:color 0.3s;
+}
+.exp-list li:hover{color:var(--gold2);}
+.exp-list li::before{
+  content:'';width:6px;height:6px;
+  border-radius:50%;background:var(--gold);flex-shrink:0;
+}
+
+/* DELIVERY */
+#delivery{
+  background:linear-gradient(135deg,var(--dark2) 0%,rgba(26,21,16,0.95) 100%);
+  text-align:center;
+}
+.delivery-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:2px;margin-top:80px;
+}
+.delivery-card{
+  background:rgba(255,255,255,0.02);
+  border:1px solid var(--border);
+  padding:48px 32px;text-align:center;
+  transition:all 0.4s;position:relative;overflow:hidden;
+}
+.delivery-card::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(184,146,58,0.08),transparent);
+  opacity:0;transition:opacity 0.4s;
+}
+.delivery-card:hover::after{opacity:1;}
+.delivery-card:hover{transform:translateY(-4px);}
+.d-icon{
+  width:64px;height:64px;margin:0 auto 24px;
+  background:rgba(184,146,58,0.1);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;
+}
+.d-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:22px;font-weight:400;
+  color:var(--cream);margin-bottom:12px;
+}
+.d-desc{font-size:13px;color:var(--muted);line-height:1.7;}
+
+/* CONTACT */
+#contact{background:var(--dark);}
+.contact-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:100px;margin-top:80px;align-items:start;
+}
+.contact-info h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:32px;font-weight:300;
+  color:var(--cream);margin-bottom:40px;
+}
+.info-item{
+  display:flex;gap:20px;margin-bottom:32px;
+  padding-bottom:32px;border-bottom:1px solid var(--border);
+}
+.info-item:last-child{border-bottom:none;}
+.info-icon{
+  width:44px;height:44px;flex-shrink:0;
+  background:rgba(184,146,58,0.1);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;
+}
+.info-label{
+  font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:6px;
+}
+.info-val{font-size:15px;color:var(--cream);line-height:1.6;}
+.info-val a{color:var(--cream);text-decoration:none;transition:color 0.3s;}
+.info-val a:hover{color:var(--gold2);}
+
+/* MAP EMBED */
+.map-wrap{
+  width:100%;height:400px;
+  border:1px solid var(--border);
+  overflow:hidden;position:relative;
+}
+.map-wrap iframe{width:100%;height:100%;border:none;filter:grayscale(80%) invert(90%) contrast(80%);}
+.map-overlay{
+  position:absolute;bottom:0;left:0;right:0;
+  background:linear-gradient(to top,var(--dark) 0%,transparent 100%);
+  height:60px;
+}
+
+/* WHATSAPP BTN */
+.wa-float{
+  position:fixed;bottom:32px;right:32px;z-index:200;
+  width:60px;height:60px;border-radius:50%;
+  background:#25d366;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 8px 32px rgba(37,211,102,0.4);
+  text-decoration:none;font-size:26px;
+  transition:all 0.3s;
+  animation:waPulse 3s infinite;
+}
+.wa-float:hover{transform:scale(1.1);box-shadow:0 12px 40px rgba(37,211,102,0.6);}
+@keyframes waPulse{0%,100%{box-shadow:0 8px 32px rgba(37,211,102,0.4);}50%{box-shadow:0 8px 48px rgba(37,211,102,0.7);}}
+
+/* FOOTER */
+footer{
+  background:var(--dark2);
+  padding:60px 8vw 32px;
+  border-top:1px solid var(--border);
+}
+.footer-grid{
+  display:grid;grid-template-columns:2fr 1fr 1fr;
+  gap:60px;margin-bottom:60px;
+}
+.footer-brand .logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:28px;color:var(--gold2);
+  letter-spacing:3px;margin-bottom:16px;
+}
+.footer-brand p{font-size:13px;color:var(--muted);line-height:1.7;max-width:280px;}
+.footer-col h4{
+  font-size:11px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--gold);margin-bottom:24px;
+}
+.footer-col ul{list-style:none;}
+.footer-col ul li{margin-bottom:12px;}
+.footer-col ul li a{
+  font-size:13px;color:var(--muted);text-decoration:none;
+  transition:color 0.3s;
+}
+.footer-col ul li a:hover{color:var(--cream);}
+.footer-bottom{
+  display:flex;justify-content:space-between;align-items:center;
+  padding-top:32px;border-top:1px solid var(--border);
+  font-size:11px;color:var(--muted);letter-spacing:1px;
+}
+.social-links{display:flex;gap:20px;}
+.social-links a{
+  color:var(--muted);text-decoration:none;
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;
+  transition:color 0.3s;
+}
+.social-links a:hover{color:var(--gold2);}
+
+/* MOBILE MENU OVERLAY */
+.mobile-menu{
+  position:fixed;inset:0;z-index:500;
+  background:var(--dark);
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;gap:40px;
+  transform:translateY(-100%);transition:transform 0.5s cubic-bezier(0.76,0,0.24,1);
+}
+.mobile-menu.open{transform:translateY(0);}
+.mobile-menu a{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(40px,8vw,80px);
+  color:var(--cream);text-decoration:none;
+  letter-spacing:3px;transition:color 0.3s;
+}
+.mobile-menu a:hover{color:var(--gold2);}
+.mobile-close{
+  position:absolute;top:24px;right:48px;
+  font-size:32px;color:var(--muted);cursor:pointer;
+  transition:color 0.3s;background:none;border:none;
+}
+.mobile-close:hover{color:var(--cream);}
+
+/* ANIMATIONS */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(30px);}
+  to{opacity:1;transform:translateY(0);}
+}
+.reveal{
+  opacity:0;transform:translateY(40px);
+  transition:opacity 0.8s ease,transform 0.8s ease;
+}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:0.1s;}
+.reveal-delay-2{transition-delay:0.2s;}
+.reveal-delay-3{transition-delay:0.3s;}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  nav{padding:20px 24px;}
+  nav.scrolled{padding:14px 24px;}
+  .nav-links,.nav-cta{display:none;}
+  .nav-hamburger{display:flex;}
+  section{padding:80px 6vw;}
+  .about-grid,.exp-inner,.contact-grid{grid-template-columns:1fr;}
+  .about-visual{height:400px;}
+  .delivery-grid{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr;}
+  .footer-bottom{flex-direction:column;gap:16px;text-align:center;}
+  .menu-panel.active{grid-template-columns:1fr;}
+  .about-stats{gap:32px;flex-wrap:wrap;}
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mobile-close" onclick="closeMobile()">✕</button>
+  <a href="#about" onclick="closeMobile()">Nosotras</a>
+  <a href="#menu" onclick="closeMobile()">Menú</a>
+  <a href="#experience" onclick="closeMobile()">Experiencia</a>
+  <a href="#delivery" onclick="closeMobile()">Domicilio</a>
+  <a href="#contact" onclick="closeMobile()">Contacto</a>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">Lak <span>Rincón Deli</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">Nosotras</a></li>
+    <li><a href="#menu">Menú</a></li>
+    <li><a href="#experience">Experiencia</a></li>
+    <li><a href="#delivery">Domicilio</a></li>
+    <li><a href="#contact">Contacto</a></li>
+  </ul>
+  <a href="https://wa.me/5255409764" class="nav-cta">Pedir Ahora</a>
+  <div class="nav-hamburger" onclick="openMobile()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas class="hero-canvas" id="heroCanvas"></canvas>
+  <div class="hero-overlay"></div>
+
+  <div class="hero-tag">Café de Especialidad · CDMX</div>
+  <h1 class="hero-title">
+    LAK<br>
+    <span class="gold italic">Rincón</span><br>
+    DELI
+  </h1>
+  <p class="hero-sub">Contamos historias con productos de nuestra tierra</p>
+  <div class="hero-btns">
+    <a href="#menu" class="btn-primary">Ver Menú</a>
+    <a href="#delivery" class="btn-outline">Pedir a Domicilio</a>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Explorar</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-track" id="marqueeTrack">
+    <span>Café de Especialidad</span><span class="marquee-sep">✦</span>
+    <span>Juana &amp; Santos · Chiapas</span><span class="marquee-sep">✦</span>
+    <span>Jardines en la Montaña</span><span class="marquee-sep">✦</span>
+    <span>Servicio a Domicilio</span><span class="marquee-sep">✦</span>
+    <span>Vinos · Cocteles · Deli</span><span class="marquee-sep">✦</span>
+    <span>Café de Especialidad</span><span class="marquee-sep">✦</span>
+    <span>Juana &amp; Santos · Chiapas</span><span class="marquee-sep">✦</span>
+    <span>Jardines en la Montaña</span><span class="marquee-sep">✦</span>
+    <span>Servicio a Domicilio</span><span class="marquee-sep">✦</span>
+    <span>Vinos · Cocteles · Deli</span><span class="marquee-sep">✦</span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-visual reveal">
+      <div class="about-visual-main">
+        <div class="coffee-scene">
+          <canvas id="coffeeCanvas" width="500" height="600"></canvas>
+        </div>
+      </div>
+      <div class="about-tag-float">
+        "Cada taza cuenta una historia de nuestra tierra"
+      </div>
+    </div>
+    <div class="about-text">
+      <div class="section-label reveal">Nuestra historia</div>
+      <h2 class="section-title reveal reveal-delay-1">Una <em>experiencia</em><br>artesanal</h2>
+      <div class="reveal reveal-delay-2">
+        <p>En Lak Rincón Deli, cada sorbo es un viaje a las parcelas chiapanecas. Trabajamos con granos de temporada seleccionados: <strong>Juana &amp; Santos</strong>, con notas de almendra, chocolate y frutos secos, y <strong>Los Altos</strong>, un café que se adapta a todos los paladares con aromas de canela y caramelo.</p>
+        <p>Más que una cafetería, somos un espacio donde la gastronomía mexicana contemporánea se encuentra con el café de especialidad. Desde desayunos artesanales hasta platillos fuertes, todo preparado con ingredientes de nuestra tierra.</p>
+        <p>También llevamos esta experiencia hasta tu casa o tu oficina, con <strong>servicio a domicilio dentro de Jardines en la Montaña</strong>.</p>
+      </div>
+      <div class="about-stats reveal reveal-delay-3">
+        <div class="stat"><h3>2</h3><p>Granos de especialidad</p></div>
+        <div class="stat"><h3>40+</h3><p>Preparaciones únicas</p></div>
+        <div class="stat"><h3>🏔️</h3><p>Origen Chiapas</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu">
+  <div class="section-label reveal">Lo que ofrecemos</div>
+  <h2 class="section-title reveal reveal-delay-1">Nuestro <em>menú</em></h2>
+
+  <div class="menu-tabs reveal reveal-delay-2">
+    <button class="menu-tab active" onclick="switchTab(this,'cafe')">☕ Café</button>
+    <button class="menu-tab" onclick="switchTab(this,'bebidas')">🥤 Bebidas</button>
+    <button class="menu-tab" onclick="switchTab(this,'vinos')">🍷 Vinos & Cocteles</button>
+    <button class="menu-tab" onclick="switchTab(this,'alimentos')">🍽️ Alimentos</button>
+    <button class="menu-tab" onclick="switchTab(this,'botanitas')">🫙 Botanas & Deli</button>
+  </div>
+
+  <!-- CAFÉ -->
+  <div class="menu-panel active" id="tab-cafe">
+    <div class="menu-card reveal">
+      <div class="card-category">Métodos Artesanales</div>
+      <div class="card-item"><div><div class="item-name">Prensa Francesa</div></div><div class="item-price">$80</div></div>
+      <div class="card-item"><div><div class="item-name">Kalita</div></div><div class="item-price">$100</div></div>
+      <div class="card-item"><div><div class="item-name">V60</div></div><div class="item-price">$100</div></div>
+      <div class="card-item"><div><div class="item-name">Chemex</div></div><div class="item-price">$120</div></div>
+      <div class="card-item"><div><div class="item-name">Origami</div></div><div class="item-price">$120</div></div>
+    </div>
+    <div class="menu-card reveal reveal-delay-1">
+      <div class="card-category">Métodos Tradicionales</div>
+      <div class="card-item"><div><div class="item-name">Espresso</div></div><div class="item-price">$45</div></div>
+      <div class="card-item"><div><div class="item-name">Europeo</div></div><div class="item-price">$60</div></div>
+      <div class="card-item"><div><div class="item-name">Americano</div></div><div class="item-price">$70</div></div>
+      <div class="card-item"><div><div class="item-name">Capuchino</div><div class="item-desc">Opción de jarabes de temporada</div></div><div class="item-price">$85</div></div>
+      <div class="card-item"><div><div class="item-name">Latte</div><div class="item-desc">Opción de jarabes de temporada</div></div><div class="item-price">$90</div></div>
+      <div class="card-item"><div><div class="item-name">Flat White</div></div><div class="item-price">$60</div></div>
+      <div class="card-item"><div><div class="item-name">Cold Brew</div></div><div class="item-price">$85</div></div>
+      <div class="card-item"><div><div class="item-name">Chocolate Caliente</div></div><div class="item-price">$85</div></div>
+    </div>
+    <div class="menu-card reveal reveal-delay-2">
+      <div class="card-category">Tés & Infusiones</div>
+      <div class="card-item"><div><div class="item-name">Matcha Latte</div><div class="item-desc">Puro o dulce, con opción de jarabes</div></div><div class="item-price">$200</div></div>
+      <div class="card-item"><div><div class="item-name">Chai Latte</div></div><div class="item-price">$100</div></div>
+      <div class="card-item"><div><div class="item-name">Chai Espresso</div></div><div class="item-price">$100</div></div>
+      <div class="card-item"><div><div class="item-name">Taro Latte</div></div><div class="item-price">$100</div></div>
+      <div class="card-item"><div><div class="item-name">Sencha · Earl Gray · Oolong</div></div><div class="item-price">$100</div></div>
+      <div class="card-item"><div><div class="item-name">Té sin cafeína</div><div class="item-desc">Manzanilla, hierbabuena, frutos rojos…</div></div><div class="item-price">$80+</div></div>
+    </div>
+    <div class="menu-card reveal reveal-delay-3">
+      <div class="card-category">Los de LAKasa — Especiales</div>
+      <div class="card-item"><div><div class="item-name">Antigripal</div></div><div class="item-price">$150</div></div>
+      <div class="card-item"><div><div class="item-name">Digestivo</div></div><div class="item-price">$150</div></div>
+      <div class="card-item"><div><div class="item-name">Relajante</div></div><div class="item-price">$150</div></div>
+      <div class="card-item"><div><div class="item-name">Cold Brew Horchata</div></div><div class="item-price">$120</div></div>
+      <div class="card-item"><div><div class="item-name">Chai Horchata</div></div><div class="item-price">$135</div></div>
+      <div class="card-item"><div><div class="item-name">Leche Dorada</div></div><div class="item-price">$90</div></div>
+      <div class="card-item"><div><div class="item-name">Chocolate y Pistache</div><div class="item-desc">Frappé o caliente</div></div><div class="item-price">$140</div></div>
+    </div>
+  </div>
+
+  <!-- BEBIDAS -->
+  <div class="menu-panel" id="tab-bebidas">
+    <div class="menu-card reveal">
+      <div class="card-category">Jugos & Smoothies</div>
+      <div class="card-item"><div><div class="item-name">Jugo de Naranja</div></div><div class="item-price">$80</div></div>
+      <div class="card-item"><div><div class="item-name">Jugo de Toronja</div></div><div class="item-price">$100</div></div>
+      <div class="card-item"><div><div class="item-name">Jugo Verde</div><div class="item-desc">Piña, apio, kiwi, manzana, jengibre, limón</div></div><div class="item-price">$100</div></div>
+      <div class="card-item"><div><div class="item-name">Smoothie de Fresa</div><div class="item-desc">Leche y yogurt griego</div></div><div class="item-price">$120</div></div>
+      <div class="card-item"><div><div class="item-name">Smoothie de Frutos Rojos</div></div><div class="item-price">$120</div></div>
+      <div class="card-item"><div><div class="item-name">Smoothie de Mango</div></div><div class="item-price">$120</div></div>
+    </div>
+    <div class="menu-card reveal reveal-delay-1">
+      <div class="card-category">Lo Refrescante</div>
+      <div class="card-item"><div><div class="item-name">Soda Limón o Naranja</div></div><div class="item-price">$80</div></div>
+      <div class="card-item"><div><div class="item-name">Jugo de Frambuesa</div></div><div class="item-price">$100</div></div>
+      <div class="card-item"><div><div class="item-name">Soda Frida Kahlo</div><div class="item-desc">Frutos rojos y jarabe de arándano</div></div><div class="item-price">$130</div></div>
+      <div class="card-item"><div><div class="item-name">Soda Mariposa</div><div class="item-desc">Té azul, limón eureka y lavanda</div></div><div class="item-price">$120</div></div>
+      <div class="card-item"><div><div class="item-name">Mango Tropical</div><div class="item-desc">Mango y pepino</div></div><div class="item-price">$130</div></div>
+      <div class="card-item"><div><div class="item-name">Chamoyada Naramango</div></div><div class="item-price">$120</div></div>
+      <div class="card-item"><div><div class="item-name">Kombucha</div><div class="item-desc">Jengibre, frambuesa, jamaica…</div></div><div class="item-price">$100</div></div>
+      <div class="card-item"><div><div class="item-name">Félix</div><div class="item-desc">Frambuesa, mandarina, maracuyá</div></div><div class="item-price">$60</div></div>
+    </div>
+  </div>
+
+  <!-- VINOS -->
+  <div class="menu-panel" id="tab-vinos">
+    <div class="menu-card reveal">
+      <div class="card-category">LAKoctelería</div>
+      <div class="card-item"><div><div class="item-name">Bellini Durazno</div></div><div class="item-price">$200</div></div>
+      <div class="card-item"><div><div class="item-name">Massala Spritz</div><div class="item-desc">Cardamomo, pimienta, jengibre y anís</div></div><div class="item-price">$200</div></div>
+      <div class="card-item"><div><div class="item-name">Spritz Rojo</div><div class="item-desc">Prosecco y mineral</div></div><div class="item-price">$200</div></div>
+      <div class="card-item"><div><div class="item-name">Spritz Blanco</div></div><div class="item-price">$200</div></div>
+      <div class="card-item"><div><div class="item-name">Mangochela en Bola</div><div class="item-desc">Con toque de clamato y coronita</div></div><div class="item-price">$170</div></div>
+      <div class="card-item"><div><div class="item-name">Cerveza Nacional</div></div><div class="item-price">$95</div></div>
+    </div>
+    <div class="menu-card reveal reveal-delay-1">
+      <div class="card-category">LAKata — Casa Magoni Blancos</div>
+      <div class="card-item"><div><div class="item-name">Manaz</div><div class="item-desc">Copa / Botella</div></div><div class="item-price">$180 / $730</div></div>
+      <div class="card-item"><div><div class="item-name">Chardonnay Vermentino</div></div><div class="item-price">$180 / $730</div></div>
+      <div class="card-item"><div><div class="item-name">Vino Rosado</div><div class="item-desc">Grenache, Pinot Noir, Cabernet Sauvignon</div></div><div class="item-price">$180 / $730</div></div>
+    </div>
+    <div class="menu-card reveal reveal-delay-2">
+      <div class="card-category">LAKata — Tintos & Espumoso</div>
+      <div class="card-item"><div><div class="item-name">Merlot Malbec</div></div><div class="item-price">$245 / $1,120</div></div>
+      <div class="card-item"><div><div class="item-name">Origen 43</div><div class="item-desc">Sangiovese, Aglianico, Montepulciano…</div></div><div class="item-price">$200 / $895</div></div>
+      <div class="card-item"><div><div class="item-name">Reserva Magoni Cabernet</div></div><div class="item-price">$1,680 botella</div></div>
+      <div class="card-item"><div><div class="item-name">Mionetto Prosecco DOC</div></div><div class="item-price">$180 / $850</div></div>
+    </div>
+  </div>
+
+  <!-- ALIMENTOS -->
+  <div class="menu-panel" id="tab-alimentos">
+    <div class="menu-card reveal">
+      <div class="card-category">Tacos, Tortas & Antojitos</div>
+      <div class="card-item"><div><div class="item-name">Gordita de Chicharrón Prensado</div><div class="item-desc">Lechuga, crema y queso</div></div><div class="item-price">$100</div></div>
+      <div class="card-item"><div><div class="item-name">Pepito de Arrachera</div><div class="item-desc">Queso gouda, cebollas caramelizadas, guacamole</div></div><div class="item-price">$280</div></div>
+      <div class="card-item"><div><div class="item-name">Lonche de Cochito Horneado</div></div><div class="item-price">$180</div></div>
+      <div class="card-item"><div><div class="item-name">Sope de Pechuga de Pollo</div></div><div class="item-price">$160</div></div>
+      <div class="card-item"><div><div class="item-name">Sope de Cecina</div></div><div class="item-price">$180</div></div>
+      <div class="card-item"><div><div class="item-name">Tacos de Arrachera (3)</div><div class="item-desc">Aguacate y cebolla encurtida</div></div><div class="item-price">$250</div></div>
+      <div class="card-item"><div><div class="item-name">Tacos de Rib Eye (3)</div><div class="item-desc">Salteados con sal al café, con aguacate</div></div><div class="item-price">$280</div></div>
+      <div class="card-item"><div><div class="item-name">Tacos de Cecina (3)</div></div><div class="item-price">$200</div></div>
+    </div>
+    <div class="menu-card reveal reveal-delay-1">
+      <div class="card-category">Ensaladas & Sopas</div>
+      <div class="card-item"><div><div class="item-name">Ensalada de LAKasa</div><div class="item-desc">Lechuga francesa, jamón, gouda, pollo, vinagreta LAK</div></div><div class="item-price">$280</div></div>
+      <div class="card-item"><div><div class="item-name">Ensalada de Palmitos</div></div><div class="item-price">$240</div></div>
+      <div class="card-item"><div><div class="item-name">Ensalada César</div></div><div class="item-price">$200</div></div>
+      <div class="card-item"><div><div class="item-name">Ensalada de Espinacas Baby</div><div class="item-desc">Nuez, tocino, queso panela, vinagreta de naranja</div></div><div class="item-price">$200</div></div>
+      <div class="card-item"><div><div class="item-name">Consomé de Pollo</div></div><div class="item-price">$130</div></div>
+      <div class="card-item"><div><div class="item-name">Sopa de Mariscos</div><div class="item-desc">Pulpo, pescado y almejas en caldillo rojo</div></div><div class="item-price">$290</div></div>
+      <div class="card-item"><div><div class="item-name">Sopa del Día</div></div><div class="item-price">$135</div></div>
+    </div>
+    <div class="menu-card reveal reveal-delay-2">
+      <div class="card-category">Nuestros Fuertes</div>
+      <div class="card-item"><div><div class="item-name">Costra de Arrachera o Rib Eye</div></div><div class="item-price">$320</div></div>
+      <div class="card-item"><div><div class="item-name">Arrachera LAK</div></div><div class="item-price">$300</div></div>
+      <div class="card-item"><div><div class="item-name">Cochito Horneado</div></div><div class="item-price">$250</div></div>
+      <div class="card-item"><div><div class="item-name">Cecina</div></div><div class="item-price">$235</div></div>
+      <div class="card-item"><div><div class="item-name">Salmón a la Plancha</div></div><div class="item-price">$380</div></div>
+      <div class="card-item"><div><div class="item-name">Pesca del Día</div></div><div class="item-price">$350</div></div>
+      <div class="card-item"><div><div class="item-name">Filete de Res a la Plancha</div></div><div class="item-price">$400</div></div>
+    </div>
+    <div class="menu-card reveal reveal-delay-3">
+      <div class="card-category">Pizza & Pasta</div>
+      <div class="card-item"><div><div class="item-name">Pasta con Salsa de Jitomate</div></div><div class="item-price">$180</div></div>
+      <div class="card-item"><div><div class="item-name">Pasta a la Mantequilla</div></div><div class="item-price">$210</div></div>
+      <div class="card-item"><div><div class="item-name">Pasta con Almejas</div><div class="item-desc">Mantequilla, vino blanco y perejil</div></div><div class="item-price">$300</div></div>
+      <div class="card-item"><div><div class="item-name">Pizza de Jamón y Queso</div></div><div class="item-price">$280</div></div>
+      <div class="card-item"><div><div class="item-name">Pizza de Setas con Arúgula</div></div><div class="item-price">$260</div></div>
+      <div class="card-item"><div><div class="item-name">Pizza de Carnes Frías</div></div><div class="item-price">$320</div></div>
+    </div>
+  </div>
+
+  <!-- BOTANITAS -->
+  <div class="menu-panel" id="tab-botanitas">
+    <div class="menu-card reveal">
+      <div class="card-category">Las Botanitas</div>
+      <div class="card-item"><div><div class="item-name">Empanaditas de Plátano Macho</div><div class="item-desc">Rellena de frijol y queso, sobre espejo de mole</div></div><div class="item-price">$150</div></div>
+      <div class="card-item"><div><div class="item-name">Tostones de Plátano</div><div class="item-desc">Queso doble crema y aceite de chile simojovel</div></div><div class="item-price">$210</div></div>
+      <div class="card-item"><div><div class="item-name">Tiradito de Salmón</div><div class="item-desc">Con chile cuaresmeño</div></div><div class="item-price">$280</div></div>
+      <div class="card-item"><div><div class="item-name">Ceviche de Pescado Blanco</div><div class="item-desc">Pregunta por la preparación del día</div></div><div class="item-price">$330</div></div>
+      <div class="card-item"><div><div class="item-name">Tabla de Quesos y Carnes Frías</div><div class="item-desc">4 quesos chiapanecos, 3 carnes frías, fruta. 2 personas</div></div><div class="item-price">$300</div></div>
+    </div>
+    <div class="menu-card reveal reveal-delay-1">
+      <div class="card-category">Para Eventos & Reuniones</div>
+      <div class="card-item"><div><div class="item-name">Charolas de Quesos y Carnes Frías</div><div class="item-desc">Ideal para reuniones o películas en casa</div></div><div class="item-price">Consultar</div></div>
+      <div class="card-item"><div><div class="item-name">Platillos Especiales Congelados</div><div class="item-desc">Para llevar y disfrutar cuando quieras</div></div><div class="item-price">Consultar</div></div>
+      <div class="card-item"><div><div class="item-name">Servicio de Café para Reuniones</div><div class="item-desc">Llevamos el café a tu oficina o evento</div></div><div class="item-price">Consultar</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE 3D -->
+<section id="experience">
+  <div class="exp-inner">
+    <div class="exp-canvas-wrap reveal">
+      <canvas id="expCanvas"></canvas>
+    </div>
+    <div class="exp-content">
+      <div class="section-label reveal">Más que una cafetería</div>
+      <h2 class="section-title reveal reveal-delay-1">Una <em>cultura</em><br>del buen vivir</h2>
+      <p class="reveal reveal-delay-2">En Lak no solo servimos café; cultivamos una comunidad alrededor de los sabores de México. Cada preparación es una invitación a detenerte, conectar y disfrutar.</p>
+      <ul class="exp-list reveal reveal-delay-3">
+        <li>Café de especialidad de parcelas chiapanecas</li>
+        <li>Menú de temporada con ingredientes locales</li>
+        <li>Vinos Casa Magoni y cocteles artesanales</li>
+        <li>Charolas y eventos a domicilio</li>
+        <li>Productos e ingredientes en venta directa</li>
+        <li>Servicio de café corporativo para reuniones</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- DELIVERY -->
+<section id="delivery">
+  <div class="section-label reveal" style="justify-content:center;">Servicio a domicilio</div>
+  <h2 class="section-title reveal reveal-delay-1" style="text-align:center;">Llevamos el <em>sabor</em><br>hasta ti</h2>
+  <div class="delivery-grid">
+    <div class="delivery-card reveal">
+      <div class="d-icon">🛵</div>
+      <div class="d-title">Entrega Rápida</div>
+      <div class="d-desc">Domicilio disponible dentro de <strong>Jardines en la Montaña</strong>, CDMX. Pedido mínimo $150 MXN.</div>
+    </div>
+    <div class="delivery-card reveal reveal-delay-1">
+      <div class="d-icon">💳</div>
+      <div class="d-title">Fácil Pago</div>
+      <div class="d-desc">Aceptamos efectivo y transferencia bancaria (SPEI) para pedidos a domicilio. Tarjeta disponible en local.</div>
+    </div>
+    <div class="delivery-card reveal reveal-delay-2">
+      <div class="d-icon">📦</div>
+      <div class="d-title">Eventos & Charolas</div>
+      <div class="d-desc">¿Reunión de trabajo, cumpleaños o cine en casa? Preparamos charolas de quesos, carnes frías y más para ti.</div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:60px;" class="reveal">
+    <a href="https://wa.me/5255409764" class="btn-primary" target="_blank">Pedir por WhatsApp</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label reveal">Encuéntranos</div>
+  <h2 class="section-title reveal reveal-delay-1">Ven a <em>visitarnos</em></h2>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <h3 class="reveal reveal-delay-2">Siempre hay una buena razón para venir a Lak.</h3>
+      <div class="info-item reveal reveal-delay-3">
+        <div class="info-icon">📍</div>
+        <div>
+          <div class="info-label">Dirección</div>
+          <div class="info-val">Pico de Verapaz 435 – Local 1<br>Jardines en la Montaña, Tlalpan<br>CDMX, México 14210</div>
+        </div>
+      </div>
+      <div class="info-item reveal reveal-delay-3">
+        <div class="info-icon">🕐</div>
+        <div>
+          <div class="info-label">Horarios</div>
+          <div class="info-val">
+            Lun – Vie: 8:00 am – 8:00 pm<br>
+            Sábados: 9:00 am – 9:00 pm<br>
+            Domingos: 9:00 am – 6:00 pm<br>
+            <small style="color:var(--muted);font-size:12px;">Horarios pueden variar. Confirma por teléfono.</small>
+          </div>
+        </div>
+      </div>
+      <div class="info-item reveal reveal-delay-3">
+        <div class="info-icon">📞</div>
+        <div>
+          <div class="info-label">Teléfonos</div>
+          <div class="info-val">
+            <a href="tel:+5593883003">Local: +55 9388 3003</a><br>
+            <a href="https://wa.me/5255409764">Pedidos: +52 55 4097 6411</a>
+          </div>
+        </div>
+      </div>
+      <div class="info-item reveal reveal-delay-3">
+        <div class="info-icon">📱</div>
+        <div>
+          <div class="info-label">Redes sociales</div>
+          <div class="info-val"><a href="https://instagram.com/lakrincondeli" target="_blank">@lakrincondeli</a></div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal reveal-delay-2">
+      <div class="map-wrap">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3765.1!2d-99.19!3d19.28!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85cdff88b5f6a62d%3A0x713d2750ea45c9c!2sLak%20Rinc%C3%B3n%20Deli!5e0!3m2!1ses!2smx!4v1"
+          allowfullscreen loading="lazy">
+        </iframe>
+        <div class="map-overlay"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="logo">Lak Rincón Deli</div>
+      <p>Café de especialidad, gastronomía mexicana contemporánea y servicio a domicilio en Jardines en la Montaña, CDMX.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Menú</h4>
+      <ul>
+        <li><a href="#menu">Café</a></li>
+        <li><a href="#menu">Bebidas</a></li>
+        <li><a href="#menu">Vinos & Cocteles</a></li>
+        <li><a href="#menu">Alimentos</a></li>
+        <li><a href="#menu">Botanas & Deli</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contacto</h4>
+      <ul>
+        <li><a href="https://wa.me/5255409764">WhatsApp Pedidos</a></li>
+        <li><a href="tel:+5593883003">Teléfono Local</a></li>
+        <li><a href="https://instagram.com/lakrincondeli">Instagram</a></li>
+        <li><a href="#contact">Cómo llegar</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Lak Rincón Deli · Todos los derechos reservados</span>
+    <div class="social-links">
+      <a href="https://instagram.com/lakrincondeli" target="_blank">Instagram</a>
+      <a href="https://wa.me/5255409764" target="_blank">WhatsApp</a>
+      <a href="https://www.lakrincondeli.com" target="_blank">Sitio Web</a>
+    </div>
+  </div>
+</footer>
+
+<!-- WHATSAPP FLOAT -->
+<a href="https://wa.me/5255409764" class="wa-float" target="_blank" title="Pedir por WhatsApp">💬</a>
+
+<script>
+// ─── CURSOR ──────────────────────────────────
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);}
+animRing();
+document.querySelectorAll('a,button,.menu-tab').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{cursor.style.width='20px';cursor.style.height='20px';ring.style.width='60px';ring.style.height='60px';});
+  el.addEventListener('mouseleave',()=>{cursor.style.width='10px';cursor.style.height='10px';ring.style.width='40px';ring.style.height='40px';});
+});
+
+// ─── NAV SCROLL ─────────────────────────────
+const navbar=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{navbar.classList.toggle('scrolled',window.scrollY>60);});
+
+// ─── MOBILE MENU ────────────────────────────
+function openMobile(){document.getElementById('mobileMenu').classList.add('open');}
+function closeMobile(){document.getElementById('mobileMenu').classList.remove('open');}
+
+// ─── MENU TABS ──────────────────────────────
+function switchTab(btn,id){
+  document.querySelectorAll('.menu-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.menu-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+}
+
+// ─── REVEAL ON SCROLL ───────────────────────
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// ─── HERO PARTICLE CANVAS ───────────────────
+(function(){
+  const canvas=document.getElementById('heroCanvas');
+  const ctx=canvas.getContext('2d');
+  let W,H,particles=[];
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+
+  function Particle(){
+    this.x=Math.random()*W;
+    this.y=Math.random()*H;
+    this.r=Math.random()*1.5+0.3;
+    this.dx=(Math.random()-0.5)*0.3;
+    this.dy=-Math.random()*0.5-0.1;
+    this.alpha=Math.random()*0.5+0.1;
+  }
+  Particle.prototype.update=function(){
+    this.x+=this.dx;this.y+=this.dy;
+    if(this.y<-10)this.y=H+10;
+    if(this.x<0)this.x=W;
+    if(this.x>W)this.x=0;
+  };
+
+  for(let i=0;i<180;i++)particles.push(new Particle());
+
+  // Bezier coffee steam curves
+  const steams=Array.from({length:5},(_,i)=>({
+    x:W*0.3+i*80,y:H*0.6,t:Math.random()*Math.PI*2,speed:0.006+i*0.001
+  }));
+
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    // Background gradient
+    const bg=ctx.createRadialGradient(W*0.3,H*0.5,0,W*0.3,H*0.5,W*0.7);
+    bg.addColorStop(0,'rgba(60,35,10,0.6)');
+    bg.addColorStop(0.5,'rgba(26,18,8,0.4)');
+    bg.addColorStop(1,'rgba(14,11,8,0)');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+
+    // Particles (floating coffee bits)
+    particles.forEach(p=>{
+      p.update();
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(184,146,58,${p.alpha})`;ctx.fill();
+    });
+
+    // Steam curves
+    steams.forEach(s=>{
+      s.t+=s.speed;
+      ctx.beginPath();
+      ctx.moveTo(s.x,s.y);
+      const cx1=s.x+Math.sin(s.t)*40,cy1=s.y-H*0.1;
+      const cx2=s.x+Math.cos(s.t+1)*30,cy2=s.y-H*0.2;
+      const ex=s.x+Math.sin(s.t+2)*20,ey=s.y-H*0.3;
+      ctx.bezierCurveTo(cx1,cy1,cx2,cy2,ex,ey);
+      const grad=ctx.createLinearGradient(s.x,s.y,ex,ey);
+      grad.addColorStop(0,'rgba(184,146,58,0.15)');
+      grad.addColorStop(1,'rgba(184,146,58,0)');
+      ctx.strokeStyle=grad;ctx.lineWidth=2;ctx.stroke();
+    });
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ─── COFFEE CUP 3D CANVAS ───────────────────
+(function(){
+  const canvas=document.getElementById('coffeeCanvas');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  let t=0;
+
+  function draw3DCoffee(){
+    ctx.clearRect(0,0,500,600);
+    t+=0.012;
+
+    // Ambient light glow
+    const glow=ctx.createRadialGradient(250,350,20,250,350,220);
+    glow.addColorStop(0,'rgba(184,146,58,0.15)');
+    glow.addColorStop(1,'rgba(184,146,58,0)');
+    ctx.fillStyle=glow;ctx.fillRect(0,0,500,600);
+
+    // Saucer
+    ctx.save();ctx.translate(250,430);
+    const saucer=ctx.createEllipse||null;
+    ctx.beginPath();ctx.ellipse(0,0,130,25,0,0,Math.PI*2);
+    ctx.fillStyle='rgba(180,140,80,0.3)';ctx.fill();
+    ctx.strokeStyle='rgba(180,140,80,0.6)';ctx.lineWidth=1.5;ctx.stroke();
+    ctx.restore();
+
+    // Cup body (3D perspective)
+    ctx.save();ctx.translate(250,380);
+    const wobble=Math.sin(t)*3;
+    ctx.rotate(wobble*0.01);
+
+    // Cup shadow
+    ctx.beginPath();ctx.ellipse(wobble,80,90,16,0,0,Math.PI*2);
+    ctx.fillStyle='rgba(0,0,0,0.3)';ctx.fill();
+
+    // Cup body gradient
+    const cupGrad=ctx.createLinearGradient(-85,-80,85,-80);
+    cupGrad.addColorStop(0,'#3d2a14');
+    cupGrad.addColorStop(0.3,'#5a3e1f');
+    cupGrad.addColorStop(0.7,'#7a5428');
+    cupGrad.addColorStop(1,'#3d2a14');
+    ctx.beginPath();
+    ctx.moveTo(-75,-80);ctx.lineTo(-85,65);
+    ctx.ellipse(0,65,85,18,0,Math.PI,Math.PI*2);
+    ctx.lineTo(75,-80);
+    ctx.fillStyle=cupGrad;ctx.fill();
+    ctx.strokeStyle='rgba(200,169,110,0.4)';ctx.lineWidth=1;ctx.stroke();
+
+    // Cup top ellipse
+    ctx.beginPath();ctx.ellipse(0,-80,75,18,0,0,Math.PI*2);
+    const topGrad=ctx.createRadialGradient(0,-80,5,0,-80,75);
+    topGrad.addColorStop(0,'rgba(40,25,8,1)');
+    topGrad.addColorStop(0.6,'rgba(60,35,10,1)');
+    topGrad.addColorStop(0.85,'rgba(100,70,25,0.8)');
+    topGrad.addColorStop(1,'rgba(140,100,40,0.6)');
+    ctx.fillStyle=topGrad;ctx.fill();
+    ctx.strokeStyle='rgba(200,169,110,0.5)';ctx.lineWidth=1;ctx.stroke();
+
+    // Coffee surface ripple
+    for(let i=0;i<3;i++){
+      const rr=20+i*18;
+      ctx.beginPath();ctx.ellipse(Math.sin(t+i)*5,-80,rr,rr*0.24,0,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(180,130,60,${0.2-i*0.05})`;ctx.lineWidth=1;ctx.stroke();
+    }
+
+    // Handle
+    ctx.beginPath();
+    ctx.moveTo(85,-30);
+    ctx.bezierCurveTo(140,-30,140,30,85,30);
+    ctx.strokeStyle='rgba(180,140,70,0.7)';ctx.lineWidth=14;ctx.lineCap='round';ctx.stroke();
+    ctx.strokeStyle='rgba(100,70,25,0.5)';ctx.lineWidth=8;ctx.stroke();
+
+    ctx.restore();
+
+    // Steam particles
+    for(let i=0;i<4;i++){
+      const sx=200+i*32;
+      const sy=280+Math.sin(t*0.8+i)*8;
+      ctx.beginPath();
+      ctx.moveTo(sx,sy);
+      ctx.bezierCurveTo(sx+Math.sin(t+i)*20,sy-40,sx+Math.cos(t+i)*15,sy-80,sx,sy-120);
+      const steamGrad=ctx.createLinearGradient(sx,sy,sx,sy-120);
+      steamGrad.addColorStop(0,'rgba(200,169,110,0.35)');
+      steamGrad.addColorStop(1,'rgba(200,169,110,0)');
+      ctx.strokeStyle=steamGrad;ctx.lineWidth=3;ctx.lineCap='round';ctx.stroke();
+    }
+
+    // LAK text
+    ctx.save();ctx.translate(250,390);
+    ctx.font='bold 13px "Bebas Neue",sans-serif';
+    ctx.fillStyle='rgba(200,169,110,0.5)';
+    ctx.textAlign='center';ctx.fillText('LAK',0,0);ctx.restore();
+
+    requestAnimationFrame(draw3DCoffee);
+  }
+  draw3DCoffee();
+})();
+
+// ─── EXPERIENCE 3D CANVAS (rotating coffee bean) ──
+(function(){
+  const canvas=document.getElementById('expCanvas');
+  if(!canvas)return;
+  canvas.width=canvas.offsetWidth||500;
+  canvas.height=canvas.offsetHeight||500;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width,H=canvas.height;
+  let t=0;
+
+  function drawBean(){
+    ctx.clearRect(0,0,W,H);
+    t+=0.008;
+
+    // Background glow
+    const bg=ctx.createRadialGradient(W/2,H/2,10,W/2,H/2,W*0.45);
+    bg.addColorStop(0,'rgba(100,65,20,0.12)');
+    bg.addColorStop(1,'rgba(100,65,20,0)');
+    ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+
+    ctx.save();
+    ctx.translate(W/2,H/2);
+
+    // Rotating rings
+    for(let ring=0;ring<4;ring++){
+      ctx.save();
+      ctx.rotate(t*(ring%2===0?1:-1)*0.7+ring);
+      ctx.beginPath();
+      const rx=80+ring*35,ry=80+ring*35;
+      ctx.ellipse(0,0,rx,ry*Math.abs(Math.sin(t*0.5+ring*0.8)),0,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(184,146,58,${0.08-ring*0.015})`;
+      ctx.lineWidth=1;ctx.stroke();
+      ctx.restore();
+    }
+
+    // Coffee bean shape
+    ctx.save();
+    ctx.rotate(t*0.5);
+    const scaleX=Math.cos(t*0.7);
+    ctx.scale(scaleX,1);
+
+    // Bean outer
+    ctx.beginPath();
+    ctx.ellipse(0,0,70,95,0,0,Math.PI*2);
+    const beanGrad=ctx.createRadialGradient(-20,-30,5,0,0,90);
+    beanGrad.addColorStop(0,'rgba(120,80,30,0.95)');
+    beanGrad.addColorStop(0.5,'rgba(80,50,15,0.9)');
+    beanGrad.addColorStop(1,'rgba(40,25,8,0.85)');
+    ctx.fillStyle=beanGrad;ctx.fill();
+    ctx.strokeStyle='rgba(184,146,58,0.4)';ctx.lineWidth=1.5;ctx.stroke();
+
+    // Bean crease
+    ctx.beginPath();
+    ctx.moveTo(0,-85);ctx.bezierCurveTo(10,-20,10,20,0,85);
+    ctx.strokeStyle='rgba(0,0,0,0.4)';ctx.lineWidth=3;ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0,-85);ctx.bezierCurveTo(-8,-20,-8,20,0,85);
+    ctx.strokeStyle='rgba(200,150,60,0.15)';ctx.lineWidth=1;ctx.stroke();
+
+    // Highlight
+    ctx.beginPath();
+    ctx.ellipse(-22,-28,18,28,Math.PI*0.3,0,Math.PI*2);
+    ctx.fillStyle='rgba(220,180,100,0.12)';ctx.fill();
+
+    ctx.restore();
+
+    // Floating letters L-A-K orbiting
+    const letters=['L','A','K','·'];
+    letters.forEach((l,i)=>{
+      const angle=t*0.4+i*(Math.PI*2/letters.length);
+      const lx=Math.cos(angle)*140;
+      const ly=Math.sin(angle)*60;
+      ctx.save();
+      ctx.translate(lx,ly);
+      ctx.font=`600 14px "Cormorant Garamond",serif`;
+      ctx.fillStyle=`rgba(184,146,58,${0.4+Math.sin(t+i)*0.2})`;
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(l,0,0);
+      ctx.restore();
+    });
+
+    ctx.restore();
+    requestAnimationFrame(drawBean);
+  }
+  drawBean();
+
+  window.addEventListener('resize',()=>{
+    canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;
+  });
+})();
+</script>
+</body>
+</html>
